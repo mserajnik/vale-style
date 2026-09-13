@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+---
+extends: substitution
+message: "Spell the term out: use '%s' instead of '%s'."
+link: https://github.com/mserajnik/vale-style
+level: error
+ignorecase: false
+action:
+  name: replace
+# Abbreviated forms of words that have a plain spelling. Vale honors a
+# code span in Markdown and reads none in a source comment, so a
+# backticked token reaches this rule there. The hyphen lookarounds keep a
+# name such as `generate-config` out, and `SHA-256` with them.
+swap:
+  '(?<!-)configs(?!-)': configurations
+  '(?<!-)config(?!-)': configuration
+  dirs: directories
+  repos: repositories
+  cwd: the current working directory
+  'SHAs(?!-)': commit hashes
+  'SHA(?!-)': commit hash
