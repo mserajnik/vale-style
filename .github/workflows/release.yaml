@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Rolling release
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build the package
+        run: |
+          mkdir -p pkg/mserajnik/styles/config
+          cp -r styles/mserajnik pkg/mserajnik/styles/
+          mkdir -p pkg/mserajnik/styles/config/vocabularies
+          cp -r styles/config/vocabularies/mserajnik \
+            pkg/mserajnik/styles/config/vocabularies/
+          cd pkg && zip -r ../mserajnik.zip mserajnik
+
+      - name: Replace the rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest mserajnik.zip \
+            --target "$GITHUB_SHA" \
+            --title latest \
+            --notes 'Rolling release built from the tip of master.'

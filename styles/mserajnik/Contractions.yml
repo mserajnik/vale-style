@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+---
+extends: existence
+message: "Contraction: '%s'. Write the words out."
+link: https://github.com/mserajnik/vale-style
+level: error
+ignorecase: true
+nonword: true
+# Two shapes cover every contraction. A word ending in `n't`, which no
+# other English word does, and a pronoun or question word carrying a
+# clitic. Naming those subjects keeps out a possessive such as `the
+# file's contents`.
+tokens:
+  - "\\b[a-z]+n't\\b"
+  - "\\b(?:i|you|we|they|it|he|she|who|what|where|when|how|that|there|here|let)'(?:s|re|ve|ll|d|m)\\b"

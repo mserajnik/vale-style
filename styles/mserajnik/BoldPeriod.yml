@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+---
+extends: existence
+message: "Bold sentence: '%s'. Bold is for a heading or a lead-in label."
+link: https://github.com/mserajnik/vale-style
+level: error
+scope: raw
+nonword: true
+# The companion to `BoldSentence`, which reads the span alone and so
+# never sees a period placed after the closing markers. That needs the
+# raw text, and a rule carries one scope. The space inside the span is
+# what keeps out a code token such as `tests/__init__.py` and a single
+# bolded word ending a sentence.
+tokens:
+  - '(?:\*\*|__)[^*_\n]*\s[^*_\n]*(?:\*\*|__)[.!?]'

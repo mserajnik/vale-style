@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+---
+extends: existence
+message: "Bold sentence: '%s'. Bold is for a heading or a lead-in label."
+link: https://github.com/mserajnik/vale-style
+level: error
+scope: strong
+nonword: true
+# A bold span whose text ends in sentence punctuation. A lead-in label
+# such as `__Label__: explanation` puts its colon outside the markers,
+# so the span itself ends in a word and never matches.
+tokens:
+  - '[a-z0-9)][.!?]$'
+  # A copula or a modal inside the span, which marks a clause rather than
+  # a label, wherever the sentence punctuation ends up. It reaches the
+  # bold clause that runs on into the sentence, which no punctuation test
+  # can see.
+  #
+  # A span opening with an interrogative is exempt: "What is deliberately
+  # absent" names a question and is a label. One that is a real sentence
+  # ends in sentence punctuation, so the token above still catches it.
+  - '(?<!^(?i:what|which|who|whom|whose|why|how|when|where)\b[^.!?]{0,60})\b(?:is|are|was|were|has|have|had|does|do|did|can|cannot|must|should|will|would|may|might)\b'

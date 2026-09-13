@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: 2026 Michael Serajnik <https://github.com/mserajnik>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run actionlint
+        uses: raven-actions/actionlint@v2
+
+  reuse:
+    name: REUSE compliance
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run reuse lint
+        uses: fsfe/reuse-action@v6
+
+  vale:
+    name: Vale
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run Vale
+        uses: vale-cli/vale-action@v3
+        with:
+          fail_level: any
+          filter_mode: nofilter
+
+  dprint:
+    name: dprint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Run dprint check
+        uses: dprint/check@v2.5
